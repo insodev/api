@@ -8,43 +8,36 @@ components:
   schemas:
     Pet:
       type: object
-      discriminator:
-        propertyName: petType
-      properties:
-        name:
-          type: string
-        petType:
-          type: string
       required:
-      - name
-      - petType
-    Cat:  ## "Cat" will be used as the discriminator value
-      description: A representation of a cat
+      - pet_type
+      properties:
+        pet_type:
+          type: string
+      discriminator:
+        propertyName: pet_type
+        mapping:
+          cachorro: Dog
+    Cat:
       allOf:
       - $ref: '#/components/schemas/Pet'
       - type: object
+        # all other properties specific to a `Cat`
         properties:
-          huntingSkill:
+          name:
             type: string
-            description: The measured skill for hunting
-            enum:
-            - clueless
-            - lazy
-            - adventurous
-            - aggressive
-        required:
-        - huntingSkill
-    Dog:  ## "Dog" will be used as the discriminator value
-      description: A representation of a dog
+    Dog:
       allOf:
       - $ref: '#/components/schemas/Pet'
       - type: object
+        # all other properties specific to a `Dog`
         properties:
-          packSize:
-            type: integer
-            format: int32
-            description: the size of the pack the dog is from
-            default: 0
-            minimum: 0
-        required:
-        - packSize
+          bark:
+            type: string
+    Lizard:
+      allOf:
+      - $ref: '#/components/schemas/Pet'
+      - type: object
+        # all other properties specific to a `Lizard`
+        properties:
+          lovesRocks:
+            type: boolean
