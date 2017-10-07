@@ -12,6 +12,10 @@ servers:
     variables:
       versionAPI:
         default: v1
+
+security:
+  - ApiKeyAuth: []     # use the same name as under securitySchemes
+
 tags:
   - name: Agent
     description: Агент
@@ -218,8 +222,6 @@ paths:
     post:
       description: Создать агента
       operationId: createAgent
-      security:
-        - ApiKeyAuth: []     # use the same name as under securitySchemes
       tags:
         - Agent
       requestBody:
@@ -294,7 +296,7 @@ paths:
           $ref: '#/components/responses/ActionNotPermitted'
         '404':
           $ref: '#/components/responses/NotFound'
-          
+
 components:
   schemas:
     Money:
@@ -313,7 +315,7 @@ components:
             - EUR
             - RUB
           default: RUB
-    
+
     InsurenceRulesType:
       description: 'Вид правил страхования. combi_flight - страхование пассажиров, vzr - страхование выезжающих за рубеж'
       type: string
@@ -332,7 +334,7 @@ components:
         name:
           description: Название
           type: string
-        uname: 
+        uname:
           $ref: '#/components/schemas/InsurenceRulesType'
         rules_version:
           description: 'Версия правил'
@@ -348,7 +350,7 @@ components:
         $ref: '#/components/schemas/ProductType'
 
     ProductState:
-      description: Структура описывающая статус договора 
+      description: Структура описывающая статус договора
       type: string
       enum:
         - draft
@@ -391,7 +393,7 @@ components:
             pdf_url:
               description: Ссылка на скачивание pdf
               type: string
-            
+
             state:
               $ref: '#/components/schemas/ProductState'
             price:
@@ -409,15 +411,15 @@ components:
           $ref: '#/components/schemas/ProductState'
         price:
           $ref: '#/components/schemas/Money'
-          
+
     ShortProductList:
       description: Список договоров страхования
       type: array
       items:
         $ref: '#/components/schemas/ShortProduct'
-    
-    
-    
+
+
+
     PaginatedProductList:
       type: object
       properties:
@@ -429,7 +431,7 @@ components:
           description: The total number of pages
         products:
           $ref: '#/components/schemas/ShortProductList'
-    
+
     filterPaginatedProductList:
       description: >-
         получеам список договоров отфильтрованный по дате последнего активного
@@ -503,7 +505,7 @@ components:
       description: 'Перелет, рейс'
       type: object
       properties:
-        ticket_number: 
+        ticket_number:
           description: Серия номер билета
           type: string
         PNR:
@@ -512,16 +514,16 @@ components:
         carrier_code:
           description: Код перевозчика
           type: string
-        flight_number: 
+        flight_number:
           description: Номер рейса
           type: string
-        airport_of_departure: 
+        airport_of_departure:
           description: Аэропорт (город) вылета
           type: string
-        arrival_airport: 
+        arrival_airport:
           description: Аэропорт (город) прилета
           type: string
-        departure_date: 
+        departure_date:
           description: Дата вылета
           type: string
           format: date-time
@@ -605,7 +607,7 @@ components:
       oneOf:
         - $ref: '#/components/schemas/createProductCombiFlight'
         - $ref: '#/components/schemas/createProductVZR'
-        
+
     Agent:
       description: структура описывающая агента
       allOf:
@@ -657,12 +659,12 @@ components:
         message:
           type: string
           description: Сообщение об ошибке
-    
+
     ErrorCodeList:
       type: array
       items:
         $ref: '#/components/schemas/ErrorCode'
-        
+
   responses:
     WrongParams:
       description: Неверные параметры
@@ -685,4 +687,3 @@ components:
       type: apiKey
       in: header       # can be "header", "query" or "cookie"
       name: X-API-KEY  # name of the header, query parameter or cookie
-
