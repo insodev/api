@@ -218,6 +218,8 @@ paths:
     post:
       description: Создать агента
       operationId: createAgent
+      security:
+        - ApiKeyAuth: []     # use the same name as under securitySchemes
       tags:
         - Agent
       requestBody:
@@ -683,5 +685,4 @@ components:
       type: apiKey
       in: header       # can be "header", "query" or "cookie"
       name: X-API-KEY  # name of the header, query parameter or cookie
-security:
-  - ApiKeyAuth: []     # use the same name as under securitySchemes
+
